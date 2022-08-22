@@ -8,6 +8,25 @@ Rather than cloning this repo, you can use your preferred package manager and th
 
 Step 1: Init `.env` file and edit environment
 
+```shell
+SHOPIFY_API_KEY=
+SHOPIFY_API_SECRET=
+HOST=
+SHOP=
+
+SCOPES=
+WEBHOOKS=
+API_VERSION=
+PORT=
+BACKEND_PORT=
+
+POSTGRES_USER=
+POSTGRES_PWD=
+POSTGRES_HOST=
+POSTGRES_PORT=
+POSTGRES_DB=
+```
+
 Step 2: Install dependencies
 
 ```shell
