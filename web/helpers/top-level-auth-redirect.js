@@ -1,5 +1,5 @@
 export default function topLevelAuthRedirect({ apiKey, hostName, shop }) {
-  const serializedQuery = new URLSearchParams({ shop }).toString();
+  const serializedQuery = new URLSearchParams({ shop }).toString()
 
   return `<!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@ export default function topLevelAuthRedirect({ apiKey, hostName, shop }) {
 
           const app = createApp({
             apiKey: '${apiKey}',
-            shopOrigin: ${JSON.stringify(shop).replaceAll(["<", ">"], "")},
+            shopOrigin: ${JSON.stringify(shop).replaceAll(['<', '>'], '')},
           });
 
           const redirect = Redirect.create(app);
@@ -34,5 +34,5 @@ export default function topLevelAuthRedirect({ apiKey, hostName, shop }) {
     </script>
   </head>
   <body></body>
-</html>`;
+</html>`
 }

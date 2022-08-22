@@ -35,7 +35,6 @@ export function AppBridgeProvider({ children }) {
     const host = new URLSearchParams(location.search).get('host') || window.host
     const shopOrigin = new URLSearchParams(location.search).get('shop') || window.shopOrigin
 
-
     window.host = host
     window.shopOrigin = shopOrigin
 

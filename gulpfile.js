@@ -1,6 +1,5 @@
 const fs = require('fs')
 
-
 /**
  * Update shopify scopes from .env file into shopify.app.toml file
  */

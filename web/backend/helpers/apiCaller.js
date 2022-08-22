@@ -21,14 +21,14 @@ const getPageInfo = (link) => {
       pageInfo.hasPrevious = true
       pageInfo.previousPageInfo = link.slice(
         link.indexOf('page_info=') + 'page_info='.length,
-        link.indexOf('>; rel="previous"')
+        link.indexOf('>; rel="previous"'),
       )
     }
     if (link.indexOf('>; rel="next"') >= 0) {
       pageInfo.hasNext = true
       pageInfo.nextPageInfo = link.slice(
         link.lastIndexOf('page_info=') + 'page_info='.length,
-        link.indexOf('>; rel="next"')
+        link.indexOf('>; rel="next"'),
       )
     }
 
