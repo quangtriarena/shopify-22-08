@@ -22,6 +22,7 @@ import storeSettingRoute from './backend/routes/admin/store_setting.js'
 import productRoute from './backend/routes/admin/product.js'
 import billingRoute from './backend/routes/admin/billing.js'
 import submitionRoute from './backend/routes/admin/submition.js'
+import uploadRouter from './backend/routes/admin/upload.js'
 
 const USE_ONLINE_TOKENS = false
 const TOP_LEVEL_OAUTH_COOKIE = 'shopify_top_level_oauth'
@@ -119,6 +120,7 @@ export async function createServer(
   productRoute(app)
   billingRoute(app)
   submitionRoute(app)
+  uploadRouter(app)
   // -------------------------------------------
 
   // All endpoints after this point will have access to a request.body

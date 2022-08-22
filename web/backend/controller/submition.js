@@ -1,5 +1,6 @@
 import verifyToken from '../auth/verifyToken.js'
 import ResponseHandler from '../helpers/responseHandler.js'
+import ProductMiddleware from '../middlewares/product.js'
 
 export default {
   submit: async (req, res) => {
@@ -10,38 +11,21 @@ export default {
       const session = await verifyToken(req, res)
       const { shop, accessToken } = session
 
-      let data = null
+      let result = {
+        product: {
+          title: 'Burton Custom Freestyle 151',
+          body_html: '<strong>Good snowboard!</strong>',
+          vendor: 'Burton',
+          product_type: 'Snowboard',
+          tags: ['Barnes & Noble', 'Big Air', "John's Fav"],
+        },
+      }
 
-      /**
-       * Duplicator export
-       */
-      // req.body = {
-      //   resources: [
-      //     { type: 'product', count: '10' },
-      //     { type: 'custom_collection', count: '10' },
-      //     { type: 'smart_collection', count: '10' },
-      //   ],
-      // }
-
-      // data = await BullmqBackgroundJobMiddleware.create('duplicator_export', {
-      //   ...req.body,
-      //   shop,
-      // })
-
-      /**
-       * Duplicator import
-       */
-      // req.body = {
-      //   uuid: 'fb764dbf-0ca6-40fe-92fa-6724fcc712ae',
-      //   package: 9,
-      // }
-
-      // data = await BullmqBackgroundJobMiddleware.create('duplicator_import', {
-      //   ...req.body,
-      //   shop,
-      // })
-
-      console.log('/api/submition data :>> ', data)
+      const data = await ProductMiddleware.create({
+        shop,
+        accessToken,
+        data: result,
+      })
 
       return ResponseHandler.success(res, data)
     } catch (error) {

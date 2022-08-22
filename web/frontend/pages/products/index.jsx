@@ -19,6 +19,7 @@ import Table from './Table'
 import { useSearchParams } from 'react-router-dom'
 import MySkeletonPage from '../../components/MySkeletonPage'
 import { generateVariantsFromOptions } from './actions'
+import UploadApi from '../../apis/upload'
 
 function ProductsPage(props) {
   const { actions, location, navigate } = props
@@ -74,7 +75,9 @@ function ProductsPage(props) {
     try {
       actions.showAppLoading()
 
+      console.log('🚀 ~ file: index.jsx ~ line 75 ~ handleSubmit ~ formData', formData)
       let options = [...formData['options']]
+
       options = options
         .filter((item) => item.name.value && item.values.value)
         .map((item) => ({
@@ -82,16 +85,36 @@ function ProductsPage(props) {
           values: item['values'].value.split(',').filter((item) => item),
         }))
 
-      let data = {
-        title: formData.title.value,
-        body_html: formData.body_html.value,
+      if (formData['images'].value.length) {
+        let images = await UploadApi.upload(formData['images'].value)
+
+        if (!images.success) {
+          actions.showNotify({ error: true, message: images.error.message })
+        }
+
+        formData['images'].value = [...images.data]
       }
+
+      let data = {}
+
+      Object.keys(formData)
+        .filter((key) => !['images'].includes(key))
+        .forEach((key) => (formData[key].value ? (data[key] = formData[key].value) : null))
+
+      if (formData['images'].value.length) {
+        data['images'] = formData['images'].value
+
+        data['images'] = data['images'].map((item) => ({
+          attachment: item.content,
+        }))
+      } else {
+        data['images'] = []
+      }
+
       if (options.length) {
         data.options = options
         data.variants = generateVariantsFromOptions(options)
       }
-
-      console.log('data :>> ', data)
 
       let res = null
 

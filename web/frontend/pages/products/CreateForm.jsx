@@ -5,6 +5,7 @@ import AppHeader from '../../components/AppHeader'
 import FormValidate from '../../helpers/formValidate'
 import FormControl from '../../components/FormControl'
 import OptionForm from './OptionForm'
+import { useRef } from 'react'
 
 CreateForm.propTypes = {
   created: PropTypes.object,
@@ -74,18 +75,22 @@ const initFormData = {
   },
   body_html: {
     type: 'text',
-    label: 'Description',
-    value: '',
+    label: 'images',
+    value: [],
     error: '',
-    required: true,
-    validate: {
-      trim: true,
-      required: [true, 'Required!'],
-      minlength: [2, 'Too short!'],
-      maxlength: [2500, 'Too long!'],
-    },
-    multiline: 6,
+    validate: {},
   },
+
+  images: {
+    type: 'file',
+    label: 'Images Products',
+    value: [],
+    originValue: [],
+    error: '',
+    validate: {},
+    allowMultiple: true,
+  },
+
   options: null,
 }
 
@@ -94,7 +99,7 @@ function CreateForm(props) {
 
   const [formData, setFormData] = useState(initFormData)
 
-  useEffect(() => console.log('formData :>> ', formData), [formData])
+  useEffect(() => {}, [formData])
 
   useEffect(() => {
     let _formData = JSON.parse(JSON.stringify(initFormData))
@@ -116,7 +121,10 @@ function CreateForm(props) {
 
   const handleChange = (name, value) => {
     let _formData = JSON.parse(JSON.stringify(formData))
+
+    Array.from(['images']).forEach((key) => (_formData[key] = formData[key]))
     _formData[name] = { ..._formData[name], value, error: '' }
+
     setFormData(_formData)
   }
 
@@ -131,9 +139,10 @@ function CreateForm(props) {
       _formData = { ...formData, ...data }
 
       if (valid) {
+        _formData['images'] = formData['images']
         onSubmit(_formData)
       } else {
-        setFormData({ ...formData, ...data })
+        setFormData(_formData)
 
         throw new Error('Invalid form data')
       }
@@ -158,6 +167,11 @@ function CreateForm(props) {
             {...formData['body_html']}
             onChange={(value) => handleChange('body_html', value)}
           />
+
+          <FormControl
+            {...formData['images']}
+            onChange={(value) => handleChange('images', value)}
+          />
         </Stack>
       </Card>
 
@@ -170,6 +184,9 @@ function CreateForm(props) {
               checked={Boolean(formData['options'])}
               onChange={() => {
                 let _formData = JSON.parse(JSON.stringify(formData))
+
+                Array.from(['images']).forEach((key) => (_formData[key] = formData[key]))
+
                 if (formData['options']) {
                   _formData['options'] = null
                 } else {
@@ -187,6 +204,9 @@ function CreateForm(props) {
                 formData={item}
                 onChange={(value) => {
                   let _formData = JSON.parse(JSON.stringify(formData))
+
+                  Array.from(['images']).forEach((key) => (_formData[key] = formData[key]))
+
                   _formData['options'][index] = value
 
                   // check has empty option
