@@ -11,7 +11,7 @@ Step 1: Init `.env` file and edit environment
 Step 2: Install dependencies
 
 ```shell
-yarn install_dependencies
+yarn install_depend
 ```
 
 Step 3: Run ngrok
