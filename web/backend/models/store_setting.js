@@ -50,9 +50,6 @@ const Model = PostgresSequelize.define('store_settings', {
     type: DataTypes.JSON,
     defaultValue: null,
   },
-  duplicator: {
-    type: DataTypes.STRING,
-  },
 })
 
 Model.prototype.toJSON = function () {
