@@ -34,6 +34,18 @@ function Table(props) {
               <b>{item.title}</b>
             </h3>
             <p>{item.handle}</p>
+
+            <Stack>
+              {item.images?.map((image) => (
+                <Stack.Item key={image.id}>
+                  <hr />
+                  <img
+                    src={image.src}
+                    style={{ display: 'block', maxWidth: '40px', height: '40px' }}
+                  ></img>
+                </Stack.Item>
+              ))}
+            </Stack>
           </Stack.Item>
         </Stack>
       </div>,

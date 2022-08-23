@@ -1,25 +1,13 @@
-import {
-  Badge,
-  Button,
-  Card,
-  DataTable,
-  Pagination,
-  Stack,
-  Tabs,
-  Thumbnail,
-  Tooltip,
-} from '@shopify/polaris'
+import { Card, Pagination, Stack } from '@shopify/polaris'
 import { useEffect, useState } from 'react'
-import ProductApi from '../../apis/product'
-import AppHeader from '../../components/AppHeader'
-import { ImagesMajor, EditMinor, DeleteMinor, ViewMinor } from '@shopify/polaris-icons'
-import CreateForm from './CreateForm'
-import ConfirmDelete from './ConfirmDelete'
-import Table from './Table'
 import { useSearchParams } from 'react-router-dom'
-import MySkeletonPage from '../../components/MySkeletonPage'
-import { generateVariantsFromOptions } from './actions'
+import ProductApi from '../../apis/product'
 import UploadApi from '../../apis/upload'
+import AppHeader from '../../components/AppHeader'
+import { generateVariantsFromOptions } from './actions'
+import ConfirmDelete from './ConfirmDelete'
+import CreateForm from './CreateForm'
+import Table from './Table'
 
 function ProductsPage(props) {
   const { actions, location, navigate } = props
@@ -75,7 +63,6 @@ function ProductsPage(props) {
     try {
       actions.showAppLoading()
 
-      console.log('🚀 ~ file: index.jsx ~ line 75 ~ handleSubmit ~ formData', formData)
       let options = [...formData['options']]
 
       options = options
@@ -107,6 +94,13 @@ function ProductsPage(props) {
         data['images'] = data['images'].map((item) => ({
           attachment: item.content,
         }))
+
+        if (formData['imageUrl'].value) {
+          let dataSrc = {
+            src: formData['imageUrl'].value,
+          }
+          data['images'] = [...data['images'], dataSrc]
+        }
       } else {
         data['images'] = []
       }
@@ -115,6 +109,8 @@ function ProductsPage(props) {
         data.options = options
         data.variants = generateVariantsFromOptions(options)
       }
+
+      console.log('111.🚀 ~ file: index.jsx ~ line 117 ~ handleSubmit ~ data', data)
 
       let res = null
 

@@ -1,11 +1,10 @@
+import { Button, Card, Checkbox, DisplayText, Stack } from '@shopify/polaris'
 import PropTypes from 'prop-types'
-import { Button, Card, Checkbox, DisplayText, Stack, TextField } from '@shopify/polaris'
 import { useEffect, useState } from 'react'
 import AppHeader from '../../components/AppHeader'
-import FormValidate from '../../helpers/formValidate'
 import FormControl from '../../components/FormControl'
+import FormValidate from '../../helpers/formValidate'
 import OptionForm from './OptionForm'
-import { useRef } from 'react'
 
 CreateForm.propTypes = {
   created: PropTypes.object,
@@ -73,6 +72,7 @@ const initFormData = {
     },
     focused: true,
   },
+
   body_html: {
     type: 'text',
     label: 'images',
@@ -91,16 +91,6 @@ const initFormData = {
     allowMultiple: true,
   },
 
-  imageUrl: {
-    type: 'text',
-    label: 'Images Products Src',
-    placeholder: 'please input src, https://...',
-    value: '',
-    originValue: '',
-    error: '',
-    validate: {},
-  },
-
   options: null,
 }
 
@@ -109,9 +99,10 @@ function CreateForm(props) {
 
   const [formData, setFormData] = useState(initFormData)
 
-  useEffect(() => {
-    console.log('🚀 ~ file: CreateForm.jsx ~ line 101 ~ CreateForm ~ formData', formData)
-  }, [formData])
+  useEffect(
+    () => console.log('🚀 ~ file: CreateForm.jsx ~ line 101 ~ CreateForm ~ formData', formData),
+    [formData],
+  )
 
   useEffect(() => {
     let _formData = JSON.parse(JSON.stringify(initFormData))
@@ -134,8 +125,7 @@ function CreateForm(props) {
   const handleChange = (name, value) => {
     let _formData = JSON.parse(JSON.stringify(formData))
 
-    Array.from(['images']).forEach((key) => (_formData[key] = formData[key]))
-
+    // Array.from(['images']).forEach((key) => (_formData[key] = formData[key]))
     _formData[name] = { ..._formData[name], value, error: '' }
 
     setFormData(_formData)
@@ -181,20 +171,10 @@ function CreateForm(props) {
             onChange={(value) => handleChange('body_html', value)}
           />
 
-          <Stack>
-            <Stack.Item fill>
-              <FormControl
-                {...formData['images']}
-                onChange={(value) => handleChange('images', value)}
-              />
-            </Stack.Item>
-            <Stack.Item fill>
-              <FormControl
-                {...formData['imageUrl']}
-                onChange={(value) => handleChange('imageUrl', value)}
-              />
-            </Stack.Item>
-          </Stack>
+          <FormControl
+            {...formData['images']}
+            onChange={(value) => handleChange('images', value)}
+          />
         </Stack>
       </Card>
 

@@ -4,6 +4,8 @@ import MyDropZoneSingle from '../MyDropZoneSingle'
 import MultipleSelect from '../MultipleSelect'
 
 function FormControl(props) {
+  console.log('🚀 ~ file: index.jsx ~ line 7 ~ FormControl ~ props', props)
+
   let label = props.label ? (
     <span>
       {props.label}
