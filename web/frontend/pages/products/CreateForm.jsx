@@ -75,7 +75,7 @@ const initFormData = {
   },
   body_html: {
     type: 'text',
-    label: 'images',
+    label: 'Description',
     value: [],
     error: '',
     validate: {},
@@ -101,6 +101,63 @@ const initFormData = {
     validate: {},
   },
 
+  status: {
+    type: 'select',
+    label: 'status',
+    options: [
+      {
+        label: 'ACTIVE',
+        value: 'active',
+      },
+      {
+        label: 'DRAFT',
+        value: 'draft',
+      },
+      {
+        label: 'ARCHIVED',
+        value: 'archived',
+      },
+    ],
+    value: 'active',
+    validate: {},
+  },
+
+  price: {
+    type: 'number',
+    label: 'Price',
+    value: 0,
+    error: '',
+    validate: {},
+  },
+
+  compare_at_price: {
+    type: 'number',
+    label: 'Compare At Price',
+    value: 0,
+    error: '',
+    validate: {},
+  },
+
+  metafields_global_title_tag: {
+    type: 'text',
+    label: 'title SEO',
+    value: '',
+    validate: {
+      minlength: [50, 'Too short!'],
+      maxlength: [300, 'Too long!'],
+    },
+  },
+
+  metafields_global_description_tag: {
+    type: 'text',
+    label: 'description SEO',
+    value: '',
+    validate: {
+      minlength: [50, 'Too short!'],
+      maxlength: [500, 'Too long!'],
+    },
+  },
+
   options: null,
 }
 
@@ -110,7 +167,7 @@ function CreateForm(props) {
   const [formData, setFormData] = useState(initFormData)
 
   useEffect(() => {
-    console.log('🚀 ~ file: CreateForm.jsx ~ line 101 ~ CreateForm ~ formData', formData)
+    // console.log('🚀 ~ file: CreateForm.jsx ~ line 101 ~ CreateForm ~ formData', formData)
   }, [formData])
 
   useEffect(() => {
@@ -123,8 +180,17 @@ function CreateForm(props) {
     _formData.body_html.value = `Sample product`
 
     if (created.id) {
-      Array.from(['title', 'body_html']).map(
+      console.log('🚀🚀🚀 ~ useEffect ~ created', created)
+      Array.from(['title', 'body_html', 'status']).map(
         (key) => (_formData[key] = { ..._formData[key], value: created[key] || '' }),
+      )
+
+      Array.from(['price', 'compare_at_price']).map(
+        (key) => (_formData[key] = { ..._formData[key], value: created.variants[0][key] || '' }),
+      )
+
+      Array.from(['images']).map(
+        (key) => (_formData[key] = { ..._formData[key], originValue: created[key] || [] }),
       )
     }
 
@@ -133,6 +199,7 @@ function CreateForm(props) {
 
   const handleChange = (name, value) => {
     let _formData = JSON.parse(JSON.stringify(formData))
+    // console.log('🚀 ~ file: CreateForm.jsx ~ line 136 ~ handleChange ~ _formData', _formData)
 
     Array.from(['images']).forEach((key) => (_formData[key] = formData[key]))
 
@@ -145,6 +212,8 @@ function CreateForm(props) {
     try {
       let _formData = { ...formData }
 
+      console.log('🚀🚀🚀 ~ handleSubmit ~ _formData', _formData)
+
       delete _formData.options
 
       const { valid, data } = FormValidate.validateForm(_formData)
@@ -153,6 +222,7 @@ function CreateForm(props) {
 
       if (valid) {
         _formData['images'] = formData['images']
+
         onSubmit(_formData)
       } else {
         setFormData(_formData)
@@ -164,6 +234,8 @@ function CreateForm(props) {
       actions.showNotify({ error: true, message: error.message })
     }
   }
+
+  console.log('formData', formData)
 
   return (
     <Stack vertical alignment="fill">
@@ -192,6 +264,49 @@ function CreateForm(props) {
               <FormControl
                 {...formData['imageUrl']}
                 onChange={(value) => handleChange('imageUrl', value)}
+              />
+            </Stack.Item>
+          </Stack>
+
+          {created.id && (
+            <Stack>
+              {formData['images'].originValue.map((item) => (
+                <Stack.Item key={item.id}>
+                  <div style={{}}>
+                    <img
+                      src={item.src}
+                      width={200}
+                      height={200}
+                      style={{ objectFit: 'cover' }}
+                      alt=""
+                    />
+                  </div>
+                </Stack.Item>
+              ))}
+            </Stack>
+          )}
+
+          <Stack>
+            <Stack.Item fill>
+              <FormControl
+                {...formData['status']}
+                onChange={(value) => handleChange('status', value)}
+              />
+            </Stack.Item>
+            <Stack.Item fill></Stack.Item>
+          </Stack>
+
+          <Stack>
+            <Stack.Item fill>
+              <FormControl
+                {...formData['price']}
+                onChange={(value) => handleChange('price', value)}
+              />
+            </Stack.Item>
+            <Stack.Item fill>
+              <FormControl
+                {...formData['compare_at_price']}
+                onChange={(value) => handleChange('compare_at_price', value)}
               />
             </Stack.Item>
           </Stack>
@@ -242,6 +357,22 @@ function CreateForm(props) {
               />
             </Card.Section>
           ))}
+      </Card>
+
+      <Card>
+        <Card.Section>
+          <Stack vertical>
+            <DisplayText size="small">SEO</DisplayText>
+            <FormControl
+              {...formData['metafields_global_title_tag']}
+              onChange={(value) => handleChange('metafields_global_title_tag', value)}
+            />
+            <FormControl
+              {...formData['metafields_global_description_tag']}
+              onChange={(value) => handleChange('metafields_global_description_tag', value)}
+            />
+          </Stack>
+        </Card.Section>
       </Card>
 
       <Stack distribution="trailing">

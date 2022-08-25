@@ -9,7 +9,7 @@ OptionForm.propTypes = {
 }
 
 OptionForm.defaultProps = {
-  formData: null,
+  formData: {},
   onChange: () => null,
 }
 

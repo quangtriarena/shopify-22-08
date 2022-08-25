@@ -62,15 +62,16 @@ function ProductsPage(props) {
   const handleSubmit = async (formData) => {
     try {
       actions.showAppLoading()
+      let options = []
 
-      let options = [...formData['options']]
-
-      options = options
-        .filter((item) => item.name.value && item.values.value)
-        .map((item) => ({
-          name: item.name.value,
-          values: item['values'].value.split(',').filter((item) => item),
-        }))
+      if (formData['options']) {
+        options = formData['options']
+          .filter((item) => item.name.value && item.values.value)
+          .map((item) => ({
+            name: item.name.value,
+            values: item['values'].value.split(',').filter((item) => item),
+          }))
+      }
 
       if (formData['images'].value.length) {
         let images = await UploadApi.upload(formData['images'].value)
@@ -85,7 +86,7 @@ function ProductsPage(props) {
       let data = {}
 
       Object.keys(formData)
-        .filter((key) => !['images'].includes(key))
+        .filter((key) => !['images', 'options'].includes(key))
         .forEach((key) => (formData[key].value ? (data[key] = formData[key].value) : null))
 
       if (formData['images'].value.length) {
@@ -108,6 +109,23 @@ function ProductsPage(props) {
       if (options.length) {
         data.options = options
         data.variants = generateVariantsFromOptions(options)
+
+        delete data.price
+        delete data.compare_at_price
+      } else {
+        data.options = [
+          {
+            name: 'Title',
+            values: ['Default Title'],
+          },
+        ]
+        data.variants = [
+          {
+            option1: 'Default Title',
+            price: formData['price'].value,
+            compare_at_price: formData['compare_at_price'].value,
+          },
+        ]
       }
 
       console.log('111.🚀 ~ file: index.jsx ~ line 117 ~ handleSubmit ~ data', data)
@@ -177,6 +195,7 @@ function ProductsPage(props) {
             label: 'Add product',
             primary: true,
             onClick: () => setCreated({}),
+            // onClick: () => navigate('/products/new'),
           },
         ]}
         onBack={() => navigate('/')}
