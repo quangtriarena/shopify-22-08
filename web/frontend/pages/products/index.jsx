@@ -134,6 +134,22 @@ function ProductsPage(props) {
 
       if (created.id) {
         // update
+        data['images'] = formData['images'].originValue.map((item) => ({
+          id: item.id,
+        }))
+
+        data['convertImage'] = formData['images'].value.map((item) => ({
+          attachment: item.content,
+        }))
+
+        data['images'] = [
+          ...data['images'],
+          ...data['convertImage'],
+          { src: formData['imageUrl'].value },
+        ]
+
+        delete data.convertImage
+
         res = await ProductApi.update(created.id, data)
       } else {
         // create

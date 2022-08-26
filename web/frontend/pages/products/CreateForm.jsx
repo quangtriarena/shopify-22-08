@@ -258,6 +258,24 @@ function CreateForm(props) {
               <FormControl
                 {...formData['images']}
                 onChange={(value) => handleChange('images', value)}
+                onDeleteOriginValue={(value) => {
+                  // console.log('🚀🚀🚀 ~ onDeleteOriginValue ~ value', value)
+
+                  let _formData = JSON.parse(JSON.stringify(formData))
+
+                  _formData['images'] = {
+                    ..._formData['images'],
+                    originValue: _formData['images'].originValue.filter(
+                      (item) => item.id !== value.id,
+                    ),
+                  }
+
+                  Array.from(['images']).forEach(
+                    (key) => (_formData[key].value = formData[key].value),
+                  )
+
+                  setFormData(_formData)
+                }}
               />
             </Stack.Item>
             <Stack.Item fill>
@@ -267,24 +285,6 @@ function CreateForm(props) {
               />
             </Stack.Item>
           </Stack>
-
-          {created.id && (
-            <Stack>
-              {formData['images'].originValue.map((item) => (
-                <Stack.Item key={item.id}>
-                  <div style={{}}>
-                    <img
-                      src={item.src}
-                      width={200}
-                      height={200}
-                      style={{ objectFit: 'cover' }}
-                      alt=""
-                    />
-                  </div>
-                </Stack.Item>
-              ))}
-            </Stack>
-          )}
 
           <Stack>
             <Stack.Item fill>

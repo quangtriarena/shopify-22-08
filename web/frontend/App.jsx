@@ -20,7 +20,10 @@ export default function App(props) {
             label: 'Products',
             pathname: '/products',
           },
-
+          {
+            label: 'Customers',
+            pathname: '/customers',
+          },
           {
             label: 'test api',
             pathname: '/test-api',

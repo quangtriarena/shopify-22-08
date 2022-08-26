@@ -99,6 +99,8 @@ const update = async ({ shop, accessToken, id, data }) => {
   try {
     validateParams({ shop, accessToken, id, data })
 
+    console.log('🚀🚀🚀 ~ update ~ data', data)
+
     return await apiCaller({
       shop,
       accessToken,

@@ -1,7 +1,8 @@
-import { RadioButton, Select, Stack, TextField } from '@shopify/polaris'
+import { Button, RadioButton, Select, Stack, TextField, Thumbnail } from '@shopify/polaris'
 import MyDropZoneMultiple from '../MyDropZoneMultiple'
 import MyDropZoneSingle from '../MyDropZoneSingle'
 import MultipleSelect from '../MultipleSelect'
+import { DeleteMinor } from '@shopify/polaris-icons'
 
 function FormControl(props) {
   // console.log('🚀 ~ file: index.jsx ~ line 7 ~ FormControl ~ props', props)
@@ -12,6 +13,24 @@ function FormControl(props) {
       {props.required ? <b style={{ color: 'rgb(220, 53, 69)' }}> *</b> : null}
     </span>
   ) : null
+
+  const renderPreview = (url) => {
+    console.log('🚀🚀🚀 ~ renderPreview ~ url', url)
+
+    return (
+      <div style={{ position: 'relative', display: 'inline' }}>
+        <div style={{ position: 'absolute', top: '0.5em', right: 0, zIndex: 1 }}>
+          <Button
+            icon={DeleteMinor}
+            size="slim"
+            plain
+            onClick={() => props.onDeleteOriginValue(url)}
+          />
+        </div>
+        <Thumbnail size="large" source={url.src} />
+      </div>
+    )
+  }
 
   switch (props.type) {
     case 'file':
@@ -25,6 +44,18 @@ function FormControl(props) {
               <MyDropZoneSingle {...props} file={props.value} />
             )}
           </Stack.Item>
+
+          {props.originValue !== undefined && (
+            <Stack spacing="extraTight">
+              {typeof props.originValue === 'string' && props.originValue !== '' ? (
+                <Stack.Item>{renderPreview(props.originValue)}</Stack.Item>
+              ) : Array.isArray(props.originValue) && props.originValue.length > 0 ? (
+                props.originValue.map((item, index) => (
+                  <Stack.Item key={index}>{renderPreview(item)}</Stack.Item>
+                ))
+              ) : null}
+            </Stack>
+          )}
         </Stack>
       )
 
