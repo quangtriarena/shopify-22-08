@@ -192,6 +192,22 @@ function CreateForm(props) {
       Array.from(['images']).map(
         (key) => (_formData[key] = { ..._formData[key], originValue: created[key] || [] }),
       )
+
+      if (created?.options[0].name !== 'Title') {
+        const optionCreated = created.options.map((item) => ({
+          name: { ...optionFormData['name'], value: item.name },
+          values: { ...optionFormData['values'], value: item.values.toString() },
+        }))
+
+        optionCreated.push({
+          name: { ...optionFormData['name'], value: '' },
+          values: { ...optionFormData['values'], value: '' },
+        })
+
+        console.log('🚀🚀🚀 ~ optionCreated ~ optionCreated', optionCreated)
+
+        Array.from(['options']).map((key) => (_formData[key] = [...optionCreated]))
+      }
     }
 
     setFormData(_formData)

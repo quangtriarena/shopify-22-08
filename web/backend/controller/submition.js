@@ -1,6 +1,6 @@
 import verifyToken from '../auth/verifyToken.js'
 import ResponseHandler from '../helpers/responseHandler.js'
-import ProductMiddleware from '../middlewares/product.js'
+import CustomerMiddleware from '../middlewares/customer/customer.js'
 
 export default {
   submit: async (req, res) => {
@@ -11,17 +11,39 @@ export default {
       const session = await verifyToken(req, res)
       const { shop, accessToken } = session
 
+      // let result = {
+      //   product: {
+      //     title: 'Burton Custom Freestyle 151',
+      //     body_html: '<strong>Good snowboard!</strong>',
+      //     vendor: 'Burton',
+      //     product_type: 'Snowboard',
+      //     tags: ['Barnes & Noble', 'Big Air', "John's Fav"],
+      //   },
+      // }
+
       let result = {
-        product: {
-          title: 'Burton Custom Freestyle 151',
-          body_html: '<strong>Good snowboard!</strong>',
-          vendor: 'Burton',
-          product_type: 'Snowboard',
-          tags: ['Barnes & Noble', 'Big Air', "John's Fav"],
+        customer: {
+          first_name: 'Steve',
+          last_name: 'Lastnameson',
+          email: 'steve.lastnameson@example.com',
+          phone: '+15142546011',
+          verified_email: true,
+          addresses: [
+            {
+              address1: '123 Oak St',
+              city: 'Ottawa',
+              province: 'ON',
+              phone: '555-1212',
+              zip: '123 ABC',
+              last_name: 'Lastnameson',
+              first_name: 'Mother',
+              country: 'CA',
+            },
+          ],
         },
       }
 
-      const data = await ProductMiddleware.create({
+      const data = await CustomerMiddleware.create({
         shop,
         accessToken,
         data: result,

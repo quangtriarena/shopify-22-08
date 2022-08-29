@@ -60,6 +60,8 @@ function ProductsPage(props) {
   }, [])
 
   const handleSubmit = async (formData) => {
+    console.log('🚀🚀🚀 ~ handleSubmit ~ formData', formData)
+
     try {
       actions.showAppLoading()
       let options = []
@@ -142,11 +144,11 @@ function ProductsPage(props) {
           attachment: item.content,
         }))
 
-        data['images'] = [
-          ...data['images'],
-          ...data['convertImage'],
-          { src: formData['imageUrl'].value },
-        ]
+        data['images'] = [...data['images'], ...data['convertImage']]
+
+        if (formData['imageUrl'].value.length) {
+          data['images'] = [...data, { src: formData['imageUrl'].value }]
+        }
 
         delete data.convertImage
 
