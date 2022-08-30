@@ -20,6 +20,7 @@ import { AppInstallations } from './app_installations.js'
 import webhookRoute from './backend/routes/webhook/index.js'
 import storeSettingRoute from './backend/routes/admin/store_setting.js'
 import productRoute from './backend/routes/admin/product.js'
+import customCollectionRoute from './backend/routes/admin/customCollection.js'
 import customerRoute from './backend/routes/admin/customer.js'
 import billingRoute from './backend/routes/admin/billing.js'
 import submitionRoute from './backend/routes/admin/submition.js'
@@ -119,6 +120,7 @@ export async function createServer(
    */
   storeSettingRoute(app)
   productRoute(app)
+  customCollectionRoute(app)
   customerRoute(app)
   billingRoute(app)
   submitionRoute(app)

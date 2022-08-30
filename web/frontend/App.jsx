@@ -25,6 +25,10 @@ export default function App(props) {
             pathname: '/customers',
           },
           {
+            label: 'Custom Collection',
+            pathname: '/custom-collection',
+          },
+          {
             label: 'test api',
             pathname: '/test-api',
           },
