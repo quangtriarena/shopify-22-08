@@ -47,13 +47,17 @@ const count = async ({ shop, accessToken }) => {
   }
 }
 
-const find = async ({ shop, accessToken, limit, pageInfo, order }) => {
+const find = async ({ shop, accessToken, limit, pageInfo, order, query }) => {
   try {
     validateParams({ shop, accessToken })
 
     let _limit = limit ? (parseInt(limit) >= 0 ? parseInt(limit) : 20) : 20
+    let _query = query ? query : ''
 
-    let endpoint = `customers.json?limit=${_limit}`
+    let endpoint = _query
+      ? `customers/search.json?query=${_query}&limit=${_limit}`
+      : `customers.json?limit=${_limit}`
+
     if (pageInfo) {
       endpoint += `&page_info=${pageInfo}`
     } else {

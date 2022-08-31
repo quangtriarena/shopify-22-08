@@ -1,14 +1,19 @@
-import { Card, Stack } from '@shopify/polaris'
+import { Card, Stack, TextField } from '@shopify/polaris'
 import React, { useEffect, useState } from 'react'
 import CustomerApi from '../../apis/customer'
 import AppHeader from '../../components/AppHeader'
 import Table from '../customers/Table'
 import ConfirmDelete from './ConfirmDelete'
 import CreateForm from './CreateForm'
+import { useSearchParams } from 'react-router-dom'
+import qs from 'query-string'
+import Search from './Search'
 
 function CustomersPage(props) {
   const { actions, location, navigate } = props
 
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [query, setQuery] = useState('')
   const [customers, setCustomers] = useState(null)
   const [created, setCreated] = useState(null)
   const [deleted, setDeleted] = useState(null)
@@ -58,6 +63,20 @@ function CustomersPage(props) {
     console.log('🚀🚀🚀 ~ handleDelete ~ deleted', deleted)
   }
 
+  const handleFilter = (filter) => {
+    let params = qs.parse(location.search) || {}
+
+    if ('query' in filter) {
+      if (filter.query) {
+        params = { ...params, query: `${filter.query}` }
+      } else {
+        delete params.query
+      }
+    }
+
+    setSearchParams(params)
+  }
+
   if (created) {
     return (
       <CreateForm
@@ -90,6 +109,8 @@ function CustomersPage(props) {
           <div>Total items: {count || 'loading..'}</div>
         </Card.Section>
 
+        {/* search query */}
+        <Search filter={qs.parse(location.search)} onChange={(filter) => handleFilter(filter)} />
         <Table
           {...props}
           items={customers?.customers}
