@@ -6,6 +6,7 @@ export default async function verifyToken(req, res) {
     if (!session?.shop) {
       throw new Error('Unauthorized')
     }
+
     return session
   } catch (error) {
     throw new Error('Unauthorized')

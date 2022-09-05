@@ -1,7 +1,11 @@
 import verifyToken from '../auth/verifyToken.js'
 import ResponseHandler from '../helpers/responseHandler.js'
+import CollectMiddleware from '../middlewares/collect.js'
+import CollectionMiddleware from '../middlewares/collection.js'
 import CustomerMiddleware from '../middlewares/customer/customer.js'
 import CustomCollectionMiddleware from '../middlewares/custom_collection.js'
+import ProductMiddleware from '../middlewares/product.js'
+import SmartCollectionMiddleware from '../middlewares/smartCollection.js'
 
 export default {
   submit: async (req, res) => {
@@ -44,13 +48,13 @@ export default {
       //   },
       // }
 
-      let result = {
-        custom_collection: {
-          title: 'apples',
-        },
-      }
+      // let result = {
+      //   custom_collection: {
+      //     title: 'apples',
+      //   },
+      // }
 
-      const data = await CustomCollectionMiddleware.find({
+      const data = await SmartCollectionMiddleware.find({
         shop,
         accessToken,
       })

@@ -77,6 +77,48 @@ function CustomersPage(props) {
     setSearchParams(params)
   }
 
+  const handleSubmit = async (formData) => {
+    try {
+      actions.showAppLoading()
+      let data = {}
+
+      Object.keys(formData)
+        .filter((key) => !['country', 'address'].includes(key))
+        .forEach((key) => (data[key] = formData[key].value))
+
+      data['addresses'] = [
+        {
+          country: formData['country'].value,
+          address1: formData['address'].value,
+        },
+      ]
+
+      let res = null
+
+      if (created.id) {
+        // mode edit
+      } else {
+        // mode add
+        res = await CustomerApi.create(data)
+      }
+
+      if (!res.success) throw res.error
+
+      console.log('res.data :>> ', res.data)
+
+      actions.showNotify({ message: created.id ? 'Saved' : 'Created' })
+
+      setCreated(null)
+
+      getCustomers(location.search)
+    } catch (error) {
+      console.log(error)
+      actions.showNotify({ message: error.message, error: true })
+    } finally {
+      actions.hideAppLoading()
+    }
+  }
+
   if (created) {
     return (
       <CreateForm

@@ -32,9 +32,7 @@ const getAll = async ({ shop, accessToken, count }) => {
     }
 
     return items
-  } catch (error) {
-    throw error
-  }
+  } catch (error) {}
 }
 
 const count = async ({ shop, accessToken }) => {

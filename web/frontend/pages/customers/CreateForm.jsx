@@ -1,11 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { Card, Stack } from '@shopify/polaris'
+import { Button, Card, Stack } from '@shopify/polaris'
 import AppHeader from '../../components/AppHeader'
 import FormControl from '../../components/FormControl'
+import countryList from '../../helpers/contries'
+import FormValidate from '../../helpers/formValidate'
 
-CreateForm.propTypes = {}
+CreateForm.propTypes = {
+  onChange: PropTypes.func,
+  onDiscard: PropTypes.func,
+  onSubmit: PropTypes.func,
+}
+
+CreateForm.defaultProps = {
+  onChange: () => null,
+  onDiscard: () => null,
+  onSubmit: () => null,
+}
 
 const initFormData = {
   first_name: {
@@ -55,20 +67,28 @@ const initFormData = {
     required: true,
     validate: {
       trim: true,
-      maxlength: [11, 'Too long!'],
+      maxlength: [15, 'Too long!'],
     },
     error: '',
   },
 
-  addresses: {
+  country: {
+    type: 'select',
+    label: 'Country/region',
+    value: 'Viet Nam',
+    options: countryList.map((country) => ({
+      label: country.name,
+      value: country.name,
+    })),
+    validate: {},
+    error: '',
+  },
+
+  address: {
     type: 'text',
     label: 'Address',
-    value: [],
-    required: true,
-    validate: {
-      trim: true,
-      maxlength: [11, 'Too long!'],
-    },
+    value: '',
+    validates: {},
     error: '',
   },
 }
@@ -84,6 +104,26 @@ function CreateForm(props) {
     _formData[name] = { ..._formData[name], value, error: '' }
 
     setFormData(_formData)
+  }
+
+  const handleSubmit = () => {
+    try {
+      let _formData = { ...formData }
+
+      const { valid, data } = FormValidate.validateForm(_formData)
+
+      _formData = { ...formData, ...data }
+
+      if (valid) {
+        onSubmit(_formData)
+      } else {
+        setFormData(_formData)
+        throw new Error('Invalid form data')
+      }
+    } catch (error) {
+      console.log(error)
+      actions.showNotify({ error: true, message: error.message })
+    }
   }
 
   return (
@@ -129,8 +169,29 @@ function CreateForm(props) {
       </Card>
 
       <Card sectioned>
-        <Stack></Stack>
+        <Stack vertical>
+          <Stack.Item fill>
+            <FormControl
+              {...formData['country']}
+              onChange={(value) => handleChange('country', value)}
+            />
+          </Stack.Item>
+
+          <Stack.Item>
+            <FormControl
+              {...formData['address']}
+              onChange={(value) => handleChange('address', value)}
+            />
+          </Stack.Item>
+        </Stack>
       </Card>
+
+      <Stack distribution="trailing">
+        <Button onClick={onDiscard}>Discard</Button>
+        <Button primary onClick={handleSubmit}>
+          {created.id ? 'Save' : 'Add'}
+        </Button>
+      </Stack>
     </Stack>
   )
 }
