@@ -116,6 +116,23 @@ const update = async ({ shop, accessToken, id, data }) => {
   }
 }
 
+const updateQuery = async ({ shop, accessToken, id, query }) => {
+  try {
+    validateParams({ shop, accessToken, id })
+
+    console.log(query.sort_order)
+
+    return await apiCaller({
+      shop,
+      accessToken,
+      endpoint: `smart_collections/${id}/order.json?sort_order=${query.sort_order}`,
+      method: 'PUT',
+    })
+  } catch (error) {
+    throw error
+  }
+}
+
 const _delete = async ({ shop, accessToken, id }) => {
   try {
     validateParams({ shop, accessToken, id })
@@ -138,6 +155,7 @@ const SmartCollectionMiddleware = {
   findById,
   create,
   update,
+  updateQuery,
   delete: _delete,
 }
 

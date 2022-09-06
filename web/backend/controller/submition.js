@@ -2,10 +2,7 @@ import verifyToken from '../auth/verifyToken.js'
 import ResponseHandler from '../helpers/responseHandler.js'
 import CollectMiddleware from '../middlewares/collect.js'
 import CollectionMiddleware from '../middlewares/collection.js'
-import CustomerMiddleware from '../middlewares/customer/customer.js'
-import CustomCollectionMiddleware from '../middlewares/custom_collection.js'
-import ProductMiddleware from '../middlewares/product.js'
-import SmartCollectionMiddleware from '../middlewares/smartCollection.js'
+import SmartCollectionMiddleware from '../middlewares/smart_collection.js'
 
 export default {
   submit: async (req, res) => {
@@ -54,9 +51,53 @@ export default {
       //   },
       // }
 
-      const data = await SmartCollectionMiddleware.find({
+      let result = {
+        smart_collection: {
+          id: 411390116064,
+          order: {
+            sort_order: 'alpha-desc',
+          },
+        },
+      }
+
+      // const data = await SmartCollectionMiddleware.findById({
+      //   shop,
+      //   accessToken,
+      //   id: 411650523360,
+      // })
+
+      // const data = await CollectionMiddleware.getProducts({
+      //   shop,
+      //   accessToken,
+      //   id: 411650523360,
+      // })
+
+      // const data = await SmartCollectionMiddleware.findById({
+      //   shop,
+      //   accessToken,
+      //   id: 411650851040,
+      //   // query: {
+      //   //   sort_order: 'alpha-desc',
+      //   // },
+      // })
+
+      const testData = {
+        smart_collection: {
+          rules: [
+            {
+              column: 'title',
+              relation: 'starts_with',
+              condition: 'sample',
+            },
+          ],
+        },
+      }
+
+      const data = await SmartCollectionMiddleware.update({
         shop,
         accessToken,
+        id: 411650851040,
+        data: testData,
       })
 
       return ResponseHandler.success(res, data)
