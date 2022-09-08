@@ -19,6 +19,8 @@ const find = async ({ shop, accessToken, resource }) => {
   try {
     validateParams({ shop, accessToken })
 
+    console.log('log', `${resource || ''}metafields.json`)
+
     return await apiCaller({
       shop,
       accessToken,
@@ -63,6 +65,7 @@ const update = async ({ shop, accessToken, resource, metafield_id, data }) => {
   try {
     validateParams({ shop, accessToken, metafield_id, data })
 
+    console.log(`${resource || ''}metafields/${metafield_id}.json`)
     return await apiCaller({
       shop,
       accessToken,

@@ -60,6 +60,8 @@ const apiCaller = async (params) => {
       data,
     }
 
+    console.log('🚀🚀🚀 ~ apiCaller ~ config', config)
+
     const res = await axios(config)
 
     let payload = res.data

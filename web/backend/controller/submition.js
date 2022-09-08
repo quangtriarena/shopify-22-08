@@ -1,7 +1,11 @@
 import verifyToken from '../auth/verifyToken.js'
 import ResponseHandler from '../helpers/responseHandler.js'
+import ArticleMiddleware from '../middlewares/article.js'
+import BlogMiddleware from '../middlewares/blog.js'
 import CollectMiddleware from '../middlewares/collect.js'
 import CollectionMiddleware from '../middlewares/collection.js'
+import MetafieldMiddleware from '../middlewares/metafield.js'
+import ProductMiddleware from '../middlewares/product.js'
 import SmartCollectionMiddleware from '../middlewares/smart_collection.js'
 
 export default {
@@ -81,23 +85,139 @@ export default {
       //   // },
       // })
 
-      const testData = {
-        smart_collection: {
-          rules: [
-            {
-              column: 'title',
-              relation: 'starts_with',
-              condition: 'sample',
-            },
-          ],
-        },
-      }
+      // const testData = {
+      //   smart_collection: {
+      //     rules: [
+      //       {
+      //         column: 'title',
+      //         relation: 'starts_with',
+      //         condition: 'sample',
+      //       },
+      //     ],
+      //   },
+      // }
 
-      const data = await SmartCollectionMiddleware.update({
+      // const data = await SmartCollectionMiddleware.update({
+      //   shop,
+      //   accessToken,
+      //   id: 411650851040,
+      //   data: testData,
+      // })
+
+      // 43292155248864
+
+      // const data = await ProductMiddleware.findById({
+      //   shop,
+      //   accessToken,
+      //   id: 7794631868640,
+      // })
+
+      // const data = await MetafieldMiddleware.create({
+      //   shop,
+      //   accessToken,
+      //   resource: `products/7798150660320/`,
+      //   data: {
+      //     metafield: {
+      //       namespace: 'inventory2',
+      //       key: 'ware_house',
+      //       value: 30,
+      //       // type: 'number_integer',
+      //       type: 'json',
+      //     },
+      //   },
+      // })
+
+      // const data = await MetafieldMiddleware.findById({
+      //   shop,
+      //   accessToken,
+      //   resource: `products/7794631868640/`,
+      //   metafield_id: 23272206762208,
+      // })
+
+      // const data = await MetafieldMiddleware.create({
+      //   shop,
+      //   accessToken,
+      //   resource: `customers/6406226575584/`,
+      //   data: {
+      //     metafield: {
+      //       namespace: 'name_2',
+      //       key: 'custom_name',
+      //       value: 'luu quang tri',
+      //       type: 'multi_line_text_field',
+      //     },
+      //   },
+      // })
+
+      // const data = await MetafieldMiddleware.find({
+      //   shop,
+      //   accessToken,
+      //   resource: ``,
+      // })
+
+      // const data = await MetafieldMiddleware.create({
+      //   shop,
+      //   accessToken,
+      //   resource: ``,
+      //   data: {
+      //     metafield: {
+      //       namespace: 'inventory_shop',
+      //       key: 'inventory',
+      //       value: 'shop',
+      //       type: 'multi_line_text_field',
+      //     },
+      //   },
+      // })
+
+      // const data = await MetafieldMiddleware.find({
+      //   shop,
+      //   accessToken,
+      //   resource: 'products/7794618597600/',
+      // })
+
+      // const data = await MetafieldMiddleware.delete({
+      //   shop,
+      //   accessToken,
+      //   // resource: 'products/7794618597600/',
+      //   metafield_id: 23276298567904,
+      // })
+
+      // 23272206762208
+
+      // const data = await MetafieldMiddleware.update({
+      //   shop,
+      //   accessToken,
+      //   resource: 'products/7794631868640/',
+      //   metafield_id: 23272206762208,
+      //   data: {
+      //     metafield: {
+      //       product_id: 7794631868640,
+      //       id: 23272206762208,
+      //       value: 12,
+      //       type: 'number_integer',
+      //     },
+      //   },
+      // })
+
+      // const data = await MetafieldMiddleware.findById({
+      //   shop,
+      //   accessToken,
+      //   resource: 'products/7794631868640/',
+      //   metafield_id: 23272206762208,
+      // })
+
+      // const data = await ArticleMiddleware.count({
+      //   shop,
+      //   accessToken,
+      // })
+
+      const data = await BlogMiddleware.create({
         shop,
         accessToken,
-        id: 411650851040,
-        data: testData,
+        data: {
+          blog: {
+            title: 'test',
+          },
+        },
       })
 
       return ResponseHandler.success(res, data)
