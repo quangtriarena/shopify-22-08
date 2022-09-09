@@ -4,6 +4,7 @@ import ArticleMiddleware from '../middlewares/article.js'
 import BlogMiddleware from '../middlewares/blog.js'
 import CollectMiddleware from '../middlewares/collect.js'
 import CollectionMiddleware from '../middlewares/collection.js'
+import ProductGraphMiddleware from '../middlewares/graphQl/product.js'
 import MetafieldMiddleware from '../middlewares/metafield.js'
 import ProductMiddleware from '../middlewares/product.js'
 import SmartCollectionMiddleware from '../middlewares/smart_collection.js'
@@ -210,14 +211,56 @@ export default {
       //   accessToken,
       // })
 
-      const data = await BlogMiddleware.create({
+      // const data = await BlogMiddleware.find({
+      //   shop,
+      //   accessToken,
+      // })
+
+      // const data = await ArticleMiddleware.create({
+      //   shop,
+      //   accessToken,
+      //   blog_id: 88095817952,
+      //   data: {
+      //     article: {
+      //       title: 'My new Article title',
+      //       author: 'John Smith',
+      //       tags: 'This Post, Has Been Tagged',
+      //       body_html: `<h1>I like articles</h1>\n<p><strong>Yea</strong>, I like posting them through <span class:\"caps\">REST</span>.</p>`,
+      //       published_at: 'Thu Mar 24 15:45:47 UTC 2011',
+      //     },
+      //   },
+      // })
+
+      // const data = await ArticleMiddleware.find({
+      //   shop,
+      //   accessToken,
+      //   blog_id: 88095817952,
+      // })
+
+      // const data = await BlogMiddleware.find({
+      //   shop,
+      //   accessToken,
+      // })
+
+      // const data = await ArticleMiddleware.findById({
+      //   shop,
+      //   accessToken,
+      //   blog_id: 88095817952,
+      //   article_id: 587957731552,
+      // })
+
+      const data = await ProductGraphMiddleware.find({
         shop,
         accessToken,
-        data: {
-          blog: {
-            title: 'test',
-          },
-        },
+        query: `{
+          products(first: 10, reverse: true){
+            edges {
+              node {
+                
+              }
+            }
+          }
+        }`,
       })
 
       return ResponseHandler.success(res, data)

@@ -6,7 +6,7 @@ const BlogMiddleware = {
     try {
       validateParams({ shop, accessToken })
 
-      return apiCaller({
+      return await apiCaller({
         shop,
         accessToken,
         endpoint: `blogs/count.json`,
